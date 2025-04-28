@@ -1,0 +1,203 @@
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+  overflow: hidden;
+}
+
+.app-container > main {
+  flex: 1 1 auto;
+  overflow: auto;       
+  padding: 0;    
+}
+
+header {
+  justify-content: center;
+  height: 80px;
+  display: flex;
+  color: white;
+  text-align: center;
+  background-image: url('/img/header.jpg');
+}
+
+header h1 {
+  margin: 15px;
+}
+html {
+  font-family: 'Inter', sans-serif;
+  background-color: black;
+  color: black;
+  line-height: 1.6;
+    width:  100%;
+    height: 100%;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  color: black;
+  line-height: 1.6;
+    width:  100%;
+    height: 100%;
+
+  background-image: url('/img/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.login-form,
+.register-form,
+.scoreboard {
+  max-width: 400px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 1rem;
+}
+
+.login-form h2,
+.register-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: black;
+}
+.login-form input,
+.register-form input {
+  width: 90%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+.login-form button,
+.register-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgb(129, 129, 74);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.login-form button:hover,
+.register-form button:hover {
+  background:darkblue
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: white;
+  border-bottom: 1px solid white;
+  background-image: url('/img/nav.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+nav a {
+  background-color: rgb(129, 129, 74);
+  color: white;
+  border-radius: 0.5rem;
+  align-items: center;
+  margin:0;
+  padding: 0.25rem 0.5rem;
+}
+nav a:hover {
+  background-color: darkblue;
+}
+
+
+.scoreboard h2 {
+  margin-bottom: 1rem;
+  text-align: center;
+  color: black;
+}
+.scoreboard button {
+  padding: 0.5rem 1rem;
+  background: rgb(129, 129, 74);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+.scoreboard button:hover {
+  background: darkblue;
+}
+.scoreboard p {
+  font-size: 1.1rem;
+  margin-top: 0.75rem;
+}
+
+iframe {
+  width: 600;
+  height: 400;
+}
+
+.text-center {
+  text-align: center;
+}
+.tres-button-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0; 
+}
+
+.btn.tres-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: rgb(129, 129, 74);
+  color: white;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.btn.tres-btn:hover {
+  background-color: darkblue;
+}
+main {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+}
+
+footer{
+  display:flex;
+  align-items: center;
+  background-image: url('/img/footer.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  height: 70px;
+}
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.logout-btn:hover {
+  background-color: darkblue;
+}
