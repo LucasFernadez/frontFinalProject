@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { auth } from '../firebase';
 
-const baseURL = import.meta.env.VITE_BACKEND_URL + '/api/scoreboard';
+const baseURL = '/api/scoreboard';
 
 async function withToken() {
   const token = await auth.currentUser.getIdToken();
