@@ -1,30 +1,22 @@
-// src/pages/TresEnRaya.jsx
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { updateScore } from '../api/scoreboard.js';
+import { updateScore } from '../api/scoreboard.js';
+import { useNavigate } from 'react-router-dom';
 
 export default function TresEnRaya() {
   const navigate = useNavigate();
-
+  
   useEffect(() => {
-    const handleMessage = async (e) => {
+    const handleMessage = (e) => {
       if (e.origin !== window.location.origin) return;
       const { result } = e.data || {};
-      if (['X', 'O', 'draw'].includes(result)) {
-        try {
-          await updateScore(result);
-          navigate('/app/scoreboard');
-        } catch (err) {
-          console.error('Error actualizando marcador:', err);
-        }
+      if (['X','O','draw'].includes(result)) {
+        updateScore(result).catch(console.error);
       }
     };
-
     window.addEventListener('message', handleMessage);
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, [navigate]);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   const src = `${import.meta.env.BASE_URL}tresenraya/index.html`;
 
