@@ -1,3 +1,4 @@
 /*    /index.html   200
 /api/*   https://backfinalproject-production.up.railway.app/api/:splat   200
 /api/*   https://TU_BACKEND_DEPLOY_URL/api/:splat   200
+/api/*   https://backfinalproject-production.up.railway.app/api/:splat   200
