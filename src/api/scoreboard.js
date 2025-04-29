@@ -1,49 +1,34 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { updateScore } from '../api/scoreboard.js';
+// src/api/scoreboard.js
+import axios from 'axios';
+import { auth } from '../firebase.js';
 
-export default function TresEnRaya() {
-  const navigate = useNavigate();
+// En dev apunta a localhost:4000, en prod se usa proxy Netlify
+const API_BASE = import.meta.env.DEV
+  ? 'http://localhost:4000/api/scoreboard'
+  : '/api/scoreboard';
 
-  useEffect(() => {
-    const handleMessage = async (e) => {
-      console.log('[TresEnRaya] Mensaje recibido:', e.data, 'origen:', e.origin);
-      // Asegurarnos de que viene de nuestro propio dominio
-      if (e.origin !== window.location.origin) {
-        console.warn('[TresEnRaya] Origen no válido, ignorando mensaje');
-        return;
-      }
+async function withToken() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('No hay usuario autenticado');
+  const token = await user.getIdToken(/* forceRefresh */ true);
+  return { headers: { Authorization: `Bearer ${token}` } };
+}
 
-      const { result } = e.data || {};
-      if (!['X', 'O', 'draw'].includes(result)) {
-        console.warn('[TresEnRaya] Result inválido:', result);
-        return;
-      }
+export async function fetchScoreboard() {
+  const config = await withToken();
+  const res = await axios.get(API_BASE, config);
+  return res.data;
+}
 
-      try {
-        console.log('[TresEnRaya] Llamando a updateScore con:', result);
-        await updateScore(result);
-        console.log('[TresEnRaya] Marcador actualizado, navegando a /app/scoreboard');
-        navigate('/app/scoreboard', { replace: true });
-      } catch (err) {
-        console.error('[TresEnRaya] Error en updateScore:', err);
-      }
-    };
+export async function updateScore(result) {
+  const config = await withToken();
+  const res = await axios.post(API_BASE, { result }, config);
+  return res.data;
+}
 
-    window.addEventListener('message', handleMessage);
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, [navigate]);
-
-  const src = `${import.meta.env.BASE_URL}tresenraya/index.html`;
-  console.log('[TresEnRaya] Iframe src =', src);
-
-  return (
-    <iframe
-      src={src}
-      title="Tres en Raya"
-      style={{ width: '100vw', height: '100vh', border: 'none', display: 'block' }}
-    />
-  );
+export async function resetScoreboard() {
+  const config = await withToken();
+  const url = `${API_BASE}/reset`;
+  const res = await axios.post(url, {}, config);
+  return res.data;
 }
