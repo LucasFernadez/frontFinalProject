@@ -1,29 +1,49 @@
-import axios from 'axios';
-import { auth } from '../firebase.js';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { updateScore } from '../api/scoreboard.js';
 
-const baseURL = '/api/scoreboard';
+export default function TresEnRaya() {
+  const navigate = useNavigate();
 
-async function withToken() {
-  const user = auth.currentUser;
-  if (!user) throw new Error('No hay usuario autenticado');
-  const token = await user.getIdToken(true);
-  return { headers: { Authorization: `Bearer ${token}` } };
-}
+  useEffect(() => {
+    const handleMessage = async (e) => {
+      console.log('[TresEnRaya] Mensaje recibido:', e.data, 'origen:', e.origin);
+      // Asegurarnos de que viene de nuestro propio dominio
+      if (e.origin !== window.location.origin) {
+        console.warn('[TresEnRaya] Origen no válido, ignorando mensaje');
+        return;
+      }
 
-export async function fetchScoreboard() {
-  const config = await withToken();
-  const res = await axios.get(baseURL, config);
-  return res.data;
-}
+      const { result } = e.data || {};
+      if (!['X', 'O', 'draw'].includes(result)) {
+        console.warn('[TresEnRaya] Result inválido:', result);
+        return;
+      }
 
-export async function updateScore(result) {
-  const config = await withToken();
-  const res = await axios.post(baseURL, { result }, config);
-  return res.data;
-}
+      try {
+        console.log('[TresEnRaya] Llamando a updateScore con:', result);
+        await updateScore(result);
+        console.log('[TresEnRaya] Marcador actualizado, navegando a /app/scoreboard');
+        navigate('/app/scoreboard', { replace: true });
+      } catch (err) {
+        console.error('[TresEnRaya] Error en updateScore:', err);
+      }
+    };
 
-export async function resetScoreboard() {
-  const config = await withToken();
-  const res = await axios.post(`${baseURL}/reset`, {}, config);
-  return res.data;
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [navigate]);
+
+  const src = `${import.meta.env.BASE_URL}tresenraya/index.html`;
+  console.log('[TresEnRaya] Iframe src =', src);
+
+  return (
+    <iframe
+      src={src}
+      title="Tres en Raya"
+      style={{ width: '100vw', height: '100vh', border: 'none', display: 'block' }}
+    />
+  );
 }
