@@ -1,11 +1,7 @@
 import { useEffect } from 'react';
 import { updateScore } from '../api/scoreboard.js';
-import { updateScore } from '../api/scoreboard.js';
-import { useNavigate } from 'react-router-dom';
 
 export default function TresEnRaya() {
-  const navigate = useNavigate();
-  
   useEffect(() => {
     const handleMessage = (e) => {
       if (e.origin !== window.location.origin) return;
