@@ -1,16 +1,15 @@
-// src/api/scoreboard.js
+
 import axios from 'axios';
 import { auth } from '../firebase.js';
 
-// En dev apunta a localhost:4000, en prod se usa proxy Netlify
 const API_BASE = import.meta.env.DEV
   ? 'http://localhost:4000/api/scoreboard'
-  : '/api/scoreboard';
+  : 'https://backfinalproject-production.up.railway.app/api/scoreboard';
 
 async function withToken() {
   const user = auth.currentUser;
   if (!user) throw new Error('No hay usuario autenticado');
-  const token = await user.getIdToken(/* forceRefresh */ true);
+  const token = await user.getIdToken(true);
   return { headers: { Authorization: `Bearer ${token}` } };
 }
 
