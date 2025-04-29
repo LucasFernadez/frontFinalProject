@@ -1,10 +1,12 @@
 import axios from 'axios';
-import { auth } from '../firebase';
+import { auth } from '../firebase.js';
 
-const baseURL = import.meta.env.VITE_BACKEND_URL + '/api/scoreboard';
+const baseURL = '/api/scoreboard';
 
 async function withToken() {
-  const token = await auth.currentUser.getIdToken();
+  const user = auth.currentUser;
+  if (!user) throw new Error('No hay usuario autenticado');
+  const token = await user.getIdToken(true);
   return { headers: { Authorization: `Bearer ${token}` } };
 }
 
@@ -22,10 +24,6 @@ export async function updateScore(result) {
 
 export async function resetScoreboard() {
   const config = await withToken();
-  const res = await axios.post(
-    import.meta.env.VITE_BACKEND_URL + '/api/scoreboard/reset',
-    {},
-    config
-  );
+  const res = await axios.post(`${baseURL}/reset`, {}, config);
   return res.data;
 }
